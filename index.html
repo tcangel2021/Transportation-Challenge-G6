@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transportation Challenge! - Grade 6 English</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #06b6d4;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-radius: 20px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Fredoka', cursive, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Top Bar & Navigation */
+        .top-bar {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary { background-color: var(--secondary); }
+        .btn-secondary:hover { background-color: #0891b2; }
+        .btn-accent { background-color: var(--accent); }
+        .btn-accent:hover { background-color: #d97706; }
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: #dc2626; }
+        .btn-success { background-color: var(--success); }
+        .btn-success:hover { background-color: #059669; }
+
+        .icon-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            color: var(--text-main);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        /* Home Screen */
+        .home-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .home-header h1 {
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 0px #e0e7ff;
+        }
+
+        .home-header p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+        }
+
+        .game-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .game-card .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .game-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .game-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .home-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        /* Settings Panel */
+        .settings-container, .leaderboard-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+
+        .settings-container h2, .leaderboard-container h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-group label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .opt-btn {
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .opt-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Game Interface Layouts */
+        .game-box {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .game-info-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .timer-badge {
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+        }
+
+        .question-img-container {
+            width: 280px;
+            height: 200px;
+            background: #f8fafc;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 2px dashed #cbd5e1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .question-img-container img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .question-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--text-main);
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .ans-btn {
+            background: #f8fafc;
+            border: 3px solid #e2e8f0;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .ans-btn:hover:not(:disabled) {
+            background: #e0e7ff;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .ans-btn.correct {
+            background: #d1fae5 !important;
+            border-color: var(--success) !important;
+            color: #065f46 !important;
+        }
+
+        .ans-btn.incorrect {
+            background: #fee2e2 !important;
+            border-color: var(--danger) !important;
+            color: #991b1b !important;
+        }
+
+        .feedback-box {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 15px 0;
+            min-height: 40px;
+            text-align: center;
+        }
+
+        .control-footer {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        /* Leaderboard table */
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-table th, .leaderboard-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .leaderboard-table th {
+            background: #f1f5f9;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .team-input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .team-input-area input {
+            flex-grow: 1;
+            padding: 12px 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .team-input-area input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Modal / Utility */
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- TOP GLOBAL BAR -->
+    <div class="top-bar">
+        <button class="icon-btn" id="homeGlobalBtn" title="Home">🏠</button>
+        <div style="display: flex; gap: 10px;">
+            <button class="icon-btn" id="soundToggleBtn" title="Sound Toggle">🔊</button>
+            <button class="icon-btn" id="fullscreenBtn" title="Full Screen">⛶</button>
+        </div>
+    </div>
+
+    <!-- 1. HOME SCREEN -->
+    <div id="homeScreen" class="screen active">
+        <div class="home-header">
+            <h1>🚍 TRANSPORTATION CHALLENGE!</h1>
+            <p>“How do you go to school?”</p>
+        </div>
+
+        <div class="game-cards-grid">
+            <div class="game-card">
+                <div class="card-icon">🖼️</div>
+                <h3>GAME 1</h3>
+                <p>Look at the picture and choose the correct answer!</p>
+                <button class="btn" onclick="startGame(1)">PLAY GAME 1</button>
+            </div>
+            <div class="game-card">
+                <div class="card-icon">🎒</div>
+                <h3>GAME 2</h3>
+                <p>Look at the picture. Learn how to say it!</p>
+                <button class="btn btn-secondary" onclick="startGame(2)">PLAY GAME 2</button>
+            </div>
+            <div class="game-card">
+                <div class="card-icon">🎤</div>
+                <h3>GAME 3</h3>
+                <p>Say the correct transportation phrase aloud!</p>
+                <button class="btn btn-accent" onclick="startGame(3)">PLAY GAME 3</button>
+            </div>
+            <div class="game-card">
+                <div class="card-icon">📝</div>
+                <h3>GAME 4</h3>
+                <p>Spelling Practice: View picture, check spelling on paper!</p>
+                <button class="btn btn-success" onclick="startGame(4)">PLAY GAME 4</button>
+            </div>
+        </div>
+
+        <div class="home-actions">
+            <button class="btn btn-secondary" onclick="openSettings()">⚙️ Settings</button>
+            <button class="btn btn-accent" onclick="openLeaderboard()">🏆 Leaderboard & Teams</button>
+        </div>
+    </div>
+
+    <!-- 2. SETTINGS PANEL -->
+    <div id="settingsScreen" class="screen">
+        <div class="settings-container">
+            <h2>⚙️ Game Settings</h2>
+            
+            <div class="setting-group">
+                <label>Number of Questions:</label>
+                <div class="option-buttons" id="qCountOpts">
+                    <button class="opt-btn" data-val="7" onclick="setSetting('qCount', 7)">7</button>
+                    <button class="opt-btn active" data-val="10" onclick="setSetting('qCount', 10)">10</button>
+                    <button class="opt-btn" data-val="15" onclick="setSetting('qCount', 15)">15</button>
+                    <button class="opt-btn" data-val="20" onclick="setSetting('qCount', 20)">20</button>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Timer per Question:</label>
+                <div class="option-buttons" id="timerOpts">
+                    <button class="opt-btn active" data-val="0" onclick="setSetting('timer', 0)">No Timer</button>
+                    <button class="opt-btn" data-val="10" onclick="setSetting('timer', 10)">10s</button>
+                    <button class="opt-btn" data-val="20" onclick="setSetting('timer', 20)">20s</button>
+                    <button class="opt-btn" data-val="30" onclick="setSetting('timer', 30)">30s</button>
+                    <button class="opt-btn" data-val="50" onclick="setSetting('timer', 50)">50s</button>
+                    <button class="opt-btn" data-val="60" onclick="setSetting('timer', 60)">1m</button>
+                    <button class="opt-btn" data-val="80" onclick="setSetting('timer', 80)">80s</button>
+                    <button class="opt-btn" data-val="120" onclick="setSetting('timer', 120)">2m</button>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Sound Effects & Voice:</label>
+                <div class="option-buttons" id="soundOpts">
+                    <button class="opt-btn active" data-val="on" onclick="setSetting('sound', 'on')">Sound ON</button>
+                    <button class="opt-btn" data-val="off" onclick="setSetting('sound', 'off')">Sound OFF</button>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <label>Full Screen Mode:</label>
+                <div class="option-buttons">
+                    <button class="opt-btn" onclick="toggleFullScreen()">Toggle Full Screen</button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" onclick="goToHome()">Save & Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. LEADERBOARD SCREEN -->
+    <div id="leaderboardScreen" class="screen">
+        <div class="leaderboard-container">
+            <h2>🏆 Classroom Score Tracker</h2>
+            
+            <div class="team-input-area">
+                <input type="text" id="newStudentName" placeholder="Enter Student or Team Name...">
+                <button class="btn" onclick="addStudent()">Add Student/Team</button>
+            </div>
+
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name/Team</th>
+                        <th>Points</th>
+                        <th>Correct</th>
+                        <th>Fast Bonus</th>
+                        <th>Accuracy</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    <!-- Populated dynamically -->
+                </tbody>
+            </table>
+
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                <button class="btn btn-secondary" onclick="resetCurrentScores()">Reset Game Scores</button>
+                <button class="btn btn-danger" onclick="resetAllScores()">Reset All Scores</button>
+                <button class="btn btn-accent" onclick="exportData()">Export Scores (JSON)</button>
+                <button class="btn" onclick="goToHome()">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. GAME PLAY SCREENS -->
+    <div id="gamePlayScreen" class="screen">
+        <div class="game-box">
+            <div class="game-info-bar">
+                <span id="activePlayerDisplay">Player: Class</span>
+                <span id="questionCounter">Question 1 / 10</span>
+                <span class="timer-badge" id="timerDisplay">⏳ <span id="timeLeft">--</span>s</span>
+            </div>
+
+            <div class="question-title" id="gameQuestionTitle">What is it?</div>
+
+            <div class="question-img-container">
+                <img id="questionImage" src="" alt="Transportation Image">
+            </div>
+
+            <!-- Dynamic Answer Area for Game 1 & 3 -->
+            <div class="answers-grid" id="answersGrid">
+                <!-- Dynamically filled -->
+            </div>
+
+            <!-- Game 2 & 4 Sentence/Answer reveal area -->
+            <div id="sentenceDisplayArea" class="hidden" style="text-align: center; margin-bottom: 20px;">
+                <h3 id="modelSentenceText" style="font-size: 1.8rem; color: var(--primary);">I go to school by bus.</h3>
+                <button class="btn btn-secondary" style="margin-top: 10px;" onclick="speakModelSentence()">🔊 Listen</button>
+            </div>
+
+            <!-- Game 3 Teacher Evaluation Controller -->
+            <div id="teacherControlArea" class="hidden" style="display: flex; gap: 15px; width: 100%; justify-content: center; margin-bottom: 15px;">
+                <button class="btn btn-success" style="font-size: 1.3rem; padding: 15px 30px;" onclick="teacherGrade(true)">✅ CORRECT (+Points)</button>
+                <button class="btn btn-danger" style="font-size: 1.3rem; padding: 15px 30px;" onclick="teacherGrade(false)">❌ INCORRECT / NEXT</button>
+            </div>
+
+            <div class="feedback-box" id="feedbackBox"></div>
+
+            <div class="control-footer">
+                <button class="btn btn-secondary" onclick="goToHome()">Quit Game</button>
+                <button class="btn hidden" id="nextQuestionBtn" onclick="nextQuestion()">Next Question ➡️</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. END OF GAME SUMMARY SCREEN -->
+    <div id="summaryScreen" class="screen">
+        <div class="game-box" style="text-align: center;">
+            <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;">🎉 Activity Completed!</h2>
+            <div id="summaryStats" style="font-size: 1.3-rem; line-height: 2.2; margin-bottom: 25px;">
+                <!-- Filled dynamically -->
+            </div>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn" onclick="restartCurrentGame()">Play Again</button>
+                <button class="btn btn-accent" onclick="openLeaderboard()">View Leaderboard</button>
+                <button class="btn btn-secondary" onclick="goToHome()">Home Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATABASE & CONFIGURATION ---
+        const vocabData = [
+            { id: "bus", name: "bus", phrase: "by bus", sentence: "I go to school by bus.", img: "https://static.vecteezy.com/system/resources/thumbnails/052/959/238/small/a-red-bus-on-a-white-background-vector.jpg" },
+            { id: "taxi", name: "taxi", phrase: "by taxi", sentence: "I go to school by taxi.", img: "https://static.vecteezy.com/system/resources/previews/021/594/381/non_2x/taxi-graphic-clipart-design-free-png.png" },
+            { id: "scooter", name: "scooter", phrase: "by scooter", sentence: "I go to school by scooter.", img: "https://static.vecteezy.com/system/resources/previews/003/235/628/non_2x/scooter-flat-color-clip-art-design-free-vector.jpg" },
+            { id: "bike", name: "bike", phrase: "by bike", sentence: "I go to school by bike.", img: "https://media.istockphoto.com/id/1135282671/vector/vector-illustration-of-happy-kids-riding-bicycles-in-the-park.jpg?s=612x612&w=0&k=20&c=MSxAS6_EbS4Vh2bWg-cq36x6WEUJxhGHQs5UyLQ5S4I=" },
+            { id: "train", name: "train", phrase: "by train", sentence: "I go to school by train.", img: "https://png.pngtree.com/png-clipart/20240318/original/pngtree-railroad-clip-art-png-image_14617049.png" },
+            { id: "metro", name: "metro/MRT", phrase: "by metro/MRT", sentence: "I go to school by metro/MRT.", img: "https://thumbs.dreamstime.com/b/train-subway-station-horizontal-background-underground-city-metro-modern-urban-public-transportaion-metropolitan-rail-vehicle-379032950.jpg" },
+            { id: "foot", name: "on foot", phrase: "on foot", sentence: "I go to school on foot.", img: "https://thumbs.dreamstime.com/b/two-kids-walking-to-school-backpacks-cartoon-illustration-boy-girl-talking-45894147.jpg" },
+            { id: "car", name: "car", phrase: "by car", sentence: "I go to school by car.", img: "https://static.vecteezy.com/system/resources/previews/043/809/459/non_2x/small-car-clipart-design-illustration-free-png.png" },
+            // Additional pictures
+            { id: "boat", name: "boat", phrase: "by boat", sentence: "I go to school by boat.", img: "https://t3.ftcdn.net/jpg/00/41/60/94/360_F_41609453_X3A8NNRDWvihqMLoJUVNmrQyKQgwgvh4.jpg" },
+            { id: "motorcycle", name: "motorcycle", phrase: "by motorcycle", sentence: "I go to school by motorcycle.", img: "https://i.pinimg.com/736x/40/8b/b0/408bb09524965d3fae10dcbe9f7168f1.jpg" },
+            { id: "plane", name: "plane/airplane", phrase: "by plane", sentence: "I go to school by plane.", img: "https://static.vecteezy.com/system/resources/previews/000/545/786/original/vector-airplane-flying-in-the-sky.jpg" }
+        ];
+
+        let settings = {
+            qCount: 10,
+            timer: 0,
+            sound: 'on'
+        };
+
+        let leaderboard = JSON.parse(localStorage.getItem('transport_leaderboard')) || [
+            { name: "Demo Student / Class", points: 0, correct: 0, fastBonus: 0, attemptsTotal: 0 }
+        ];
+        let activeStudentIndex = 0;
+
+        let currentGame = 1;
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let correctCount = 0;
+        let fastBonusCount = 0;
+        let attemptsOnCurrent = 0;
+        let questionStartTime = 0;
+        let timerInterval = null;
+        let timeLeft = 0;
+        let questionAnswered = false;
+
+        // --- NAVIGATION & SCREENS ---
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            stopSpeech();
+            clearInterval(timerInterval);
+        }
+
+        function goToHome() { showScreen('homeScreen'); }
+        function openSettings() { showScreen('settingsScreen'); }
+        function openLeaderboard() { renderLeaderboard(); showScreen('leaderboardScreen'); }
+
+        function setSetting(key, val) {
+            settings[key] = val;
+            // update UI active buttons
+            const containerId = key === 'qCount' ? 'qCountOpts' : key === 'timer' ? 'timerOpts' : 'soundOpts';
+            document.querySelectorAll(`#${containerId} .opt-btn`).forEach(btn => {
+                if(btn.getAttribute('data-val') == val) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log("Error attempting to enable fullscreen:", err.message);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        document.getElementById('soundToggleBtn').addEventListener('click', () => {
+            settings.sound = settings.sound === 'on' ? 'off' : 'on';
+            document.getElementById('soundToggleBtn').textContent = settings.sound === 'on' ? '🔊' : '🔇';
+            setSetting('sound', settings.sound);
+        });
+
+        document.getElementById('homeGlobalBtn').addEventListener('click', goToHome);
+
+        // --- AUDIO SPEECH SYNTHESIS ---
+        function speak(text) {
+            if (settings.sound === 'off') return;
+            if ('speechSynthesis' in window) {
+                stopSpeech();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function stopSpeech() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        // --- GAME FLOW LOGIC ---
+        function startGame(gameNum) {
+            currentGame = gameNum;
+            score = 0;
+            correctCount = 0;
+            fastBonusCount = 0;
+            currentIndex = 0;
+
+            // Generate randomized question pool matching selected qCount
+            currentQuestions = [];
+            let pool = [...vocabData];
+            for (let i = 0; i < settings.qCount; i++) {
+                if (pool.length === 0) pool = [...vocabData];
+                const randomIndex = Math.floor(Math.random() * pool.length);
+                currentQuestions.push(pool.splice(randomIndex, 1)[0]);
+            }
+
+            showScreen('gamePlayScreen');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            clearInterval(timerInterval);
+            questionAnswered = false;
+            attemptsOnCurrent = 0;
+            document.getElementById('feedbackBoxtextContent') = "";
+            document.getElementById('feedbackBox').textContent = "";
+            document.getElementById('nextQuestionBtn').classList.add('hidden');
+
+            if (currentIndex >= currentQuestions.length) {
+                endGame();
+                return;
+            }
+
+            const qData = currentQuestions[currentIndex];
+            document.getElementById('questionCounter').textContent = `Question ${currentIndex + 1} / ${currentQuestions.length}`;
+            document.getElementById('activePlayerDisplay').textContent = `Player: ${leaderboard[activeStudentIndex] ? leaderboard[activeStudentIndex].name : 'Class'}`;
+            document.getElementById('questionImage').src = qData.img;
+
+            // Setup per game views
+            const answersGrid = document.getElementById('answersGrid');
+            const sentenceArea = document.getElementById('sentenceDisplayArea');
+            const teacherCtrl = document.getElementById('teacherControlArea');
+            const qTitle = document.getElementById('gameQuestionTitle');
+
+            answersGrid.innerHTML = '';
+            answersGrid.classList.add('hidden');
+            sentenceArea.classList.add('hidden');
+            teacherCtrl.classList.add('hidden');
+
+            if (currentGame === 1) {
+                qTitle.textContent = "What is it?";
+                answersGrid.classList.remove('hidden');
+                
+                // Build 4 choices (1 correct, 3 distractors)
+                let choices = [qData.phrase];
+                while(choices.length < 4) {
+                    let randItem = vocabData[Math.floor(Math.random() * vocabData.length)].phrase;
+                    if(!choices.includes(randItem)) choices.push(randItem);
+                }
+                choices.sort(() => Math.random() - 0.5);
+
+                choices.forEach(choice => {
+                    const btn = document.createElement('button');
+                    btn.className = 'ans-btn';
+                    btn.textContent = choice;
+                    btn.onclick = () => submitAnswerGame1(qData.phrase, choice, btn);
+                    answersGrid.appendChild(btn);
+                });
+
+                speak("What is it?");
+            } 
+            else if (currentGame === 2) {
+                qTitle.textContent = "How do you go to school?";
+                sentenceArea.classList.remove('hidden');
+                document.getElementById('modelSentenceText').textContent = qData.sentence;
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
+                speak("How do you go to school? " + qData.sentence);
+            }
+            else if (currentGame === 3) {
+                qTitle.textContent = "Say it aloud!";
+                teacherCtrl.classList.remove('hidden');
+                speak("Say the transportation phrase aloud!");
+            }
+            else if (currentGame === 4) {
+                // Game 4: Spelling on paper challenge
+                qTitle.textContent = "Spelling Practice (Write on Paper)";
+                sentenceArea.classList.remove('hidden');
+                // Hide answer initially until timer stops or reveal clicked
+                document.getElementById('modelSentenceText').textContent = "⌛ Waiting for spelling time...";
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
+                speak("Spell it on paper!");
+            }
+
+            // Start Timer if enabled
+            if (settings.timer > 0) {
+                timeLeft = settings.timer;
+                document.getElementById('timerDisplay').classList.remove('hidden');
+                document.getElementById('timeLeft').textContent = timeLeft;
+                questionStartTime = Date.now();
+
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('timeLeft').textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        handleTimeOut(qData);
+                    }
+                }, 1000);
+            } else {
+                document.getElementById('timerDisplay').classList.add('hidden');
+                questionStartTime = Date.now();
+            }
+        }
+
+        function submitAnswerGame1(correctAnswer, selectedAnswer, btnElement) {
+            if (questionAnswered) return;
+            attemptsOnCurrent++;
+
+            const elapsedSec = (Date.now() - questionStartTime) / 1000;
+
+            if (selectedAnswer === correctAnswer) {
+                questionAnswered = true;
+                clearInterval(timerInterval);
+                btnElement.classList.add('correct');
+                
+                let ptsEarned = 0;
+                if (attemptsOnCurrent === 1) {
+                    ptsEarned += 2;
+                    correctCount++;
+                    if (elapsedSec <= 3) {
+                        ptsEarned += 3;
+                        fastBonusCount++;
+                        showFeedback("🌟 Fast Bonus! +5 Points! Excellent!", "success");
+                    } else {
+                        showFeedback("🎉 Good job! +2 Points!", "success");
+                    }
+                } else {
+                    ptsEarned += 1;
+                    correctCount++;
+                    showFeedback("👍 Correct! +1 Point.", "success");
+                }
+
+                score += ptsEarned;
+                updateLeaderboardRecord(ptsEarned, true, elapsedSec <= 3 && attemptsOnCurrent === 1);
+                lockAllAnswers();
+                speak("Good job!");
+                document.getElementById('nextQuestionBtn').classList.remove('hidden');
+
+            } else {
+                btnElement.classList.add('incorrect');
+                btnElement.disabled = true;
+
+                if (attemptsOnCurrent >= 3) {
+                    questionAnswered = true;
+                    clearInterval(timerInterval);
+                    showFeedback(`❌ Out of attempts. Answer is: ${correctAnswer}`, "danger");
+                    lockAllAnswers();
+                    updateLeaderboardRecord(0, false, false);
+                    speak("Let's learn the answer: " + correctAnswer);
+                    document.getElementById('nextQuestionBtn').classList.remove('hidden');
+                } else {
+                    showFeedback("❌ Try again!", "danger");
+                    speak("Try again!");
+                }
+            }
+        }
+
+        function handleTimeOut(qData) {
+            questionAnswered = true;
+            if (currentGame === 1) {
+                showFeedback(`⏰ Time's up! Answer: ${qData.phrase}`, "danger");
+                lockAllAnswers();
+                updateLeaderboardRecord(0, false, false);
+            } else if (currentGame === 4) {
+                document.getElementById('modelSentenceText').textContent = `Correct Spelling: ${qData.phrase}`;
+                speak(qData.phrase);
+            }
+            document.getElementById('nextQuestionBtn').classList.remove('hidden');
+        }
+
+        function teacherGrade(isCorrect) {
+            if (questionAnswered) return;
+            questionAnswered = true;
+            clearInterval(timerInterval);
+            const elapsedSec = (Date.now() - questionStartTime) / 1000;
+
+            if (isCorrect) {
+                let pts = 0;
+                if (elapsedSec <= 3) {
+                    pts = 5;
+                    fastBonusCount++;
+                    correctCount++;
+                    showFeedback("🌟 Fast Correct! +5 Points!", "success");
+                } else {
+                    pts = 2;
+                    correctCount++;
+                    showFeedback("🎉 Correct! +2 Points!", "success");
+                }
+                score += pts;
+                updateLeaderboardRecord(pts, true, pts === 5);
+                speak("Fantastic!");
+            } else {
+                showFeedback("❌ Keep practicing!", "danger");
+                updateLeaderboardRecord(0, false, false);
+                speak("Keep practicing!");
+            }
+            document.getElementById('nextQuestionBtn').classList.remove('hidden');
+        }
+
+        function lockAllAnswers() {
+            document.querySelectorAll('.ans-btn').forEach(b => b.disabled = true);
+        }
+
+        function showFeedback(text, type) {
+            const fb = document.getElementById('feedbackBox');
+            fb.textContent = text;
+            fb.style.color = type === 'success' ? 'var(--success)' : 'var(--danger)';
+        }
+
+        function speakModelSentence() {
+            speak(currentQuestions[currentIndex].sentence);
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            loadQuestion();
+        }
+
+        function endGame() {
+            showScreen('summaryScreen');
+            const accuracy = Math.round((correctCount / currentQuestions.length) * 100) || 0;
+            document.getElementById('summaryStats').innerHTML = `
+                Total Score: <b>${score}</b> pts<br>
+                Correct Answers: <b>${correctCount} / ${currentQuestions.length}</b><br>
+                Fast Bonuses: <b>${fastBonusCount}</b><br>
+                Accuracy: <b>${accuracy}%</b>
+            `;
+            saveLeaderboardToLocalStorage();
+        }
+
+        function restartCurrentGame() {
+            startGame(currentGame);
+        }
+
+        // --- LEADERBOARD & TEAM FUNCTIONS ---
+        function updateLeaderboardRecord(pts, isCorrect, isFast) {
+            if (leaderboard[activeStudentIndex]) {
+                leaderboard[activeStudentIndex].points += pts;
+                if(isCorrect) leaderboard[activeStudentIndex].correct++;
+                if(isFast) leaderboard[activeStudentIndex].fastBonus++;
+                leaderboard[activeStudentIndex].attemptsTotal++;
+                saveLeaderboardToLocalStorage();
+            }
+        }
+
+        function addStudent() {
+            const input = document.getElementById('newStudentName');
+            const name = input.value.trim();
+            if (name) {
+                leaderboard.push({ name: name, points: 0, correct: 0, fastBonus: 0, attemptsTotal: 0 });
+                input.value = '';
+                renderLeaderboard();
+                saveLeaderboardToLocalStorage();
+            }
+        }
+
+        function renderLeaderboard() {
+            // Sort by points descending, then correct answers
+            leaderboard.sort((a, b) => b.points - a.points || b.correct - a.correct);
+            const tbody = document.getElementById('leaderboardBody');
+            tbody.innerHTML = '';
+
+            leaderboard.forEach((student, index) => {
+                const accuracy = student.attemptsTotal > 0 ? Math.round((student.correct / student.attemptsTotal) * 100) : 0;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>#${index + 1}</b></td>
+                    <td>${student.name} ${index === activeStudentIndex ? '⭐ (Active)' : ''}</td>
+                    <td><b>${student.points}</b></td>
+                    <td>${student.correct}</td>
+                    <td>${student.fastBonus}</td>
+                    <td>${accuracy}%</td>
+                    <td>
+                        <button class="btn" style="padding: 4px 10px; font-size: 0.85rem;" onclick="setActiveStudent(${index})">Select</button>
+                        <button class="btn btn-danger" style="padding: 4px 10px; font-size: 0.85rem;" onclick="removeStudent(${index})">Del</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function setActiveStudent(index) {
+            activeStudentIndex = index;
+            alert(`Active student/team set to: ${leaderboard[index].name}`);
+            renderLeaderboard();
+        }
+
+        function removeStudent(index) {
+            if (leaderboard.length > 1) {
+                leaderboard.splice(index, 1);
+                if (activeStudentIndex >= leaderboard.length) activeStudentIndex = 0;
+                renderLeaderboard();
+                saveLeaderboardToLocalStorage();
+            } else {
+                alert("You must keep at least one student or team on the leaderboard.");
+            }
+        }
+
+        function resetCurrentScores() {
+            if(confirm("Reset scores for all students to zero?")) {
+                leaderboard.forEach(s => { s.points = 0; s.correct = 0; s.fastBonus = 0; s.attemptsTotal = 0; });
+                renderLeaderboard();
+                saveLeaderboardToLocalStorage();
+            }
+        }
+
+        function resetAllScores() {
+            if(confirm("Clear all students and reset leaderboard?")) {
+                leaderboard = [{ name: "Default Student", points: 0, correct: 0, fastBonus: 0, attemptsTotal: 0 }];
+                activeStudentIndex = 0;
+                renderLeaderboard();
+                saveLeaderboardToLocalStorage();
+            }
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(leaderboard, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "transportation_challenge_scores.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function saveLeaderboardToLocalStorage() {
+            localStorage.setItem('transport_leaderboard', JSON.stringify(leaderboard));
+        }
+    </script>
+</body>
+</html>
